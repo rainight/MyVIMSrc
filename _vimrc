@@ -1,5 +1,7 @@
+if has("win32")
 source $VIMRUNTIME/mswin.vim
 behave mswin
+endif
 
 execute pathogen#infect()
 
@@ -131,8 +133,9 @@ filetype on " detect the type of file
 filetype plugin on " load filetype plugins
 filetype indent on
 set history=1000 " How many lines of history to remember
-set clipboard+=unnamed " turns out I do like is sharing windows clipboard
+
 if has("win32")
+    set clipboard+=unnamed " turns out I do like is sharing windows clipboard
 	set ffs=dos,unix,mac " support all three,in this order
 else
 	set ffs=unix,dos,mac " support all three,in this order
@@ -150,8 +153,8 @@ set copyindent
 set showbreak=\ \ \ \ \  "indicator for wrapped lines
 set shellslash
 
-"silent execute '!mkdir "'.$VIMRUNTIME.'/temp"'
-"silent execute '!del "'.$VIMRUNTIME.'/temp/*~"'
+"silent execute '!mkdir "'.$VIM/temp"'
+"silent execute '!del "'.$VIM/temp/*~"'
 set backupdir=$VIM/temp//
 set directory=$VIM/temp//
 
@@ -165,6 +168,7 @@ if (has("gui_running"))
 	"set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
 	set guifont=Consolas:h11:cANSI
 	colorscheme desert
+	set lines=50 columns=140
 else
 	set paste "this option is useful when using Vim in a terminal
 	set wrap
@@ -214,9 +218,6 @@ set nohlsearch " do not highlight searched for phrases
 set incsearch " BUT do highlight as you type you search phrase
 set ignorecase smartcase
 "set listchars=tab: \ | \ ,trail: .,extends: > ,precedes: < ,eol: $ " what to show when I hit :set list
-"set lines=41 " 80 lines tall
-"set columns=160 " 160 cols wide
-set lines=45 columns=120
 set so=5 " Keep 10 lines (top/bottom) for scope
 set novisualbell " don't blink
 set noerrorbells " no noises
@@ -230,6 +231,7 @@ set laststatus=2 " always show the status line
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set fo=tcrqn " See Help (complex)
 set si " smartindent
+set autoindent
 set tabstop=4 " tab spacing (settings below are just to unify it)
 set softtabstop=4 " unify
 set shiftwidth=4 " unify
@@ -279,7 +281,7 @@ if has("win32")
 else
 	set path=.
 	set path+=/usr/include/**,/usr/lib/qt-3.1/include/**
-	set tags=/data/home/linxd/src/linux-2.6.17.8/tags
+	set tags=/home/shawn.liu/ac/src/tags
 endif
 let Tlist_Sort_Type="name" " order by
 
@@ -443,10 +445,10 @@ nnoremap <M-6> 6gt
 nnoremap <M-7> 7gt
 nnoremap <M-8> 8gt
 nnoremap <M-9> 9gt
-nnoremap <M-h> :tabp<CR>
-nnoremap <M-l> :tabn<CR>
-nnoremap <M-t> :tabnew<CR>
-nnoremap <M-w> :tabclose<CR>
+nnoremap <C-h> :tabp<CR>
+nnoremap <C-j> :tabn<CR>
+nnoremap <C-t> :tabnew<CR>
+"nnoremap <C-m> :tabclose<CR>
 nnoremap <C-Tab> gt
 
 nnoremap <M-j> <c-w>w
@@ -509,7 +511,7 @@ endfunction
 "update title in first 10 lines if not find, add new
 function TitleDet()
 	let n=1
-	"Ä¬ÈÏÎªÌí¼Ó
+	"add as default
 	while n < 20
 		let line = getline(n)
 		if line =~ '^\#\s*\S*MODIFIED:\S*.*$'
@@ -542,7 +544,7 @@ nnoremap <silent>  <F8> :cn<CR>
 "nnoremap <silent>  <F10> :QFix<CR>
 nnoremap <silent>  <F10> :TlistToggle<CR>
 nnoremap <silent>  <F11> :A<CR>
-autocmd FileType c,cpp nnoremap <silent> <buffer>  <F12> mm:%!astyle --style=ansi -s4 --convert-tabs -O -S -p -L -T<CR> :update<CR>'m
+autocmd FileType c,cpp nnoremap <silent> <buffer>  <F12> mm:%!astyle --style=allman -s4 --convert-tabs -O -S -p -L -N<CR> :update<CR>'m
 autocmd FileType c,cpp inoremap <silent> <buffer>  <F12> <Esc>mm:%!astyle --style=ansi -T<CR> :update<CR>'m
 nnoremap <silent>  <S-F1> :set tags=./tags,tags,h:/Gemini_Rel4.1/gemini_delivery/src/tags<CR>
 nnoremap <silent>  <C-F1> :set tags=./tags,tags,h:/Mercury_Rel6.2_M610/mercury_delivery/src/tags<CR>
@@ -568,6 +570,46 @@ imap <silent> <C-U> <leader>cu
 vmap <silent> <C-U> <leader>cu
 
 let NERDShutUp=1
+
+"For NERDTree
+let g:nerdtree_tabs_open_on_gui_startup = 0
+" Open NERDTree on gvim/macvim startup
+
+let g:nerdtree_tabs_open_on_console_startup = 0
+" Open NERDTree on console vim startup
+
+let g:nerdtree_tabs_no_startup_for_diff = 1
+  "Do not open NERDTree if vim starts in diff mode
+
+let g:nerdtree_tabs_smart_startup_focus = 1
+"  On startup - focus NERDTree when opening a directory, focus the file if
+"  editing a specified file. When set to `2`, always focus file after startup.
+
+let g:nerdtree_tabs_open_on_new_tab = 1
+"  Open NERDTree on new tab creation (if NERDTree was globally opened by
+"  :NERDTreeTabsToggle)
+
+let g:nerdtree_tabs_meaningful_tab_names = 1
+  "Unfocus NERDTree when leaving a tab for descriptive tab names
+
+let g:nerdtree_tabs_autoclose = 1
+  "Close current tab if there is only one window in it and it's NERDTree
+
+let g:nerdtree_tabs_synchronize_view = 1
+  "Synchronize view of all NERDTree windows (scroll and cursor position)
+
+let g:nerdtree_tabs_synchronize_focus = 1
+"  Synchronize focus when switching tabs (focus NERDTree after tab switch
+"  if and only if it was focused before tab switch)
+
+let g:nerdtree_tabs_focus_on_files = 0
+"  When switching into a tab, make sure that focus is on the file window,
+"  not in the NERDTree window. (Note that this can get annoying if you use
+"  NERDTree's feature "open in new tab silently", as you will lose focus on the
+"  NERDTree.)
+
+let g:nerdtree_tabs_startup_cd = 1
+  "When starting up with a directory name as a parameter, cd into it
 
 "key mapping end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
