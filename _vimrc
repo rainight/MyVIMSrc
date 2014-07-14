@@ -1,6 +1,6 @@
 if has("win32")
-source $VIMRUNTIME/mswin.vim
-behave mswin
+	source $VIMRUNTIME/mswin.vim
+	behave mswin
 endif
 
 execute pathogen#infect()
@@ -155,8 +155,13 @@ set shellslash
 
 "silent execute '!mkdir "'.$VIM/temp"'
 "silent execute '!del "'.$VIM/temp/*~"'
-set backupdir=$VIM/temp//
-set directory=$VIM/temp//
+if has("win32")
+	set backupdir=$VIM/temp//
+	set directory=$VIM/temp//
+else
+	set backupdir=~/temp//
+	set directory=~/temp//
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Theme/Colors 
@@ -718,7 +723,7 @@ function! ClosePair(char)
 	else
 		return a:char
 	endif
-endf 
+endfunction 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if !(has("gui_running"))
