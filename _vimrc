@@ -485,7 +485,7 @@ nnoremap <silent> <F2> :MRU<CR>
 nnoremap <silent> <F3> :BufExplorer<CR>
 nnoremap <silent> <F4> :%!xxd<CR>
 nnoremap <silent> <S-F4> :%!xxd -r<CR>
-nnoremap <silent> <F9> ms:call TitleDet()<cr>'s
+nnoremap <silent> <F11> ms:call TitleDet()<cr>'s
 function AddTitle()
 	call append( 0,"///////////////////////////////////////////////////////////////////////////")
 	call append( 1,"//")
@@ -546,9 +546,9 @@ else
 endif
 nnoremap <silent>  <F7> :cp<CR>
 nnoremap <silent>  <F8> :cn<CR>
+nnoremap <silent>  <F9> :A<CR>
 "nnoremap <silent>  <F10> :QFix<CR>
 nnoremap <silent>  <F10> :TlistToggle<CR>
-nnoremap <silent>  <F11> :A<CR>
 autocmd FileType c,cpp nnoremap <silent> <buffer>  <F12> mm:%!astyle --style=allman -s4 --convert-tabs -O -S -p -L -N<CR> :update<CR>'m
 autocmd FileType c,cpp inoremap <silent> <buffer>  <F12> <Esc>mm:%!astyle --style=ansi -T<CR> :update<CR>'m
 nnoremap <silent>  <S-F1> :set tags=./tags,tags,h:/Gemini_Rel4.1/gemini_delivery/src/tags<CR>
@@ -600,14 +600,14 @@ let g:nerdtree_tabs_meaningful_tab_names = 1
 let g:nerdtree_tabs_autoclose = 1
   "Close current tab if there is only one window in it and it's NERDTree
 
-let g:nerdtree_tabs_synchronize_view = 1
+let g:nerdtree_tabs_synchronize_view = 0
   "Synchronize view of all NERDTree windows (scroll and cursor position)
 
 let g:nerdtree_tabs_synchronize_focus = 1
 "  Synchronize focus when switching tabs (focus NERDTree after tab switch
 "  if and only if it was focused before tab switch)
 
-let g:nerdtree_tabs_focus_on_files = 0
+let g:nerdtree_tabs_focus_on_files = 1
 "  When switching into a tab, make sure that focus is on the file window,
 "  not in the NERDTree window. (Note that this can get annoying if you use
 "  NERDTree's feature "open in new tab silently", as you will lose focus on the
