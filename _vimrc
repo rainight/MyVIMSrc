@@ -286,7 +286,7 @@ if has("win32")
 else
 	set path=.
 	set path+=/usr/include/**,/usr/lib/qt-3.1/include/**
-	set tags=/home/shawn.liu/ac/src/tags
+	set tags=$HOME/ac/src/tags
 endif
 let Tlist_Sort_Type="name" " order by
 
@@ -551,8 +551,8 @@ nnoremap <silent>  <F9> :A<CR>
 nnoremap <silent>  <F10> :TlistToggle<CR>
 autocmd FileType c,cpp nnoremap <silent> <buffer>  <F12> mm:%!astyle --style=allman -s4 --convert-tabs -O -S -p -L -N<CR> :update<CR>'m
 autocmd FileType c,cpp inoremap <silent> <buffer>  <F12> <Esc>mm:%!astyle --style=ansi -T<CR> :update<CR>'m
-nnoremap <silent>  <S-F1> :set tags=./tags,tags,h:/Gemini_Rel4.1/gemini_delivery/src/tags<CR>
-nnoremap <silent>  <C-F1> :set tags=./tags,tags,h:/Mercury_Rel6.2_M610/mercury_delivery/src/tags<CR>
+nnoremap <silent>  <S-F1> :set tags=$VIM/tags,./tags,tags<CR>
+nnoremap <silent>  <C-F1> :set tags=$VIM/tags,./tags,tags<CR>
 
 " Toggle spell check
 " For VIM7 only
