@@ -430,16 +430,19 @@ noremap <m-e> :e<space>
 noremap <m-g> :vimgrep<space>
 noremap <m-s-n> :n<space>**/*
 
-nnoremap  <leader>sf :vimgrep <C-R><C-W> %<CR>
+"nnoremap  <leader>sf :vimgrep <C-R><C-W> %<CR>
 nnoremap  <leader>sr :vimgrep <C-R><C-W> <C-R>=expand('%:p:h').'/**/*'<CR>
 
 "windows compatible
-nnoremap <C-S> :update<CR>
-inoremap <C-S> <C-o>:update<CR>
-vnoremap <C-S> <C-C>:update<CR>
-nnoremap <C-Z> u
-inoremap <C-Z> <C-o>u
-vnoremap p <Esc>:let current_reg=@"<CR>gvdi<C-R>=current_reg<CR><Esc>
+if has("win32")
+	nnoremap <C-S> :update<CR>
+	inoremap <C-S> <C-o>:update<CR>
+	vnoremap <C-S> <C-C>:update<CR>
+	nnoremap <C-Z> u
+	inoremap <C-Z> <C-o>u
+	vnoremap p <Esc>:let current_reg=@"<CR>gvdi<C-R>=current_reg<CR><Esc>
+endif
+
 "tab opt
 nnoremap <M-1> 1gt
 nnoremap <M-2> 2gt
