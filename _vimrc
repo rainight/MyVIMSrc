@@ -172,13 +172,21 @@ if (has("gui_running"))
 	set nowrap
 	"set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
 	set guifont=Consolas:h11:cANSI
-	colorscheme desert
+	colorscheme solarized
 	set lines=50 columns=140
 else
+	set background=dark
 	set paste "this option is useful when using Vim in a terminal
 	set wrap
+	colorscheme solarized
 	colo ron
 endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Solarized theme
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:solarized_termcolors=256
+let g:solarized_visibility="high"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim UI
