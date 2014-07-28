@@ -178,7 +178,6 @@ else
 	set background=dark
 	set paste "this option is useful when using Vim in a terminal
 	set wrap
-	colorscheme solarized
 	colo ron
 endif
 
@@ -248,7 +247,7 @@ set autoindent
 set tabstop=4 " tab spacing (settings below are just to unify it)
 set softtabstop=4 " unify
 set shiftwidth=4 " unify
-set noexpandtab " real tabs please!
+set expandtab " real tabs please!
 "set nowrap
 set wrap " do not wrap lines
 set smarttab " use tabs at the start of a line,spaces elsewhere
@@ -289,12 +288,13 @@ let bufExplorerMaxHeight=15
 "put ctag.exe in VIM install folder
 if has("win32")
 	set path=.
-	set path+=D:\workspace\tags,H:\\workspace\\tags
+	set path+=c:\mytags\,H:\\mytags\\
 	let Tlist_Ctags_Cmd='ctags.exe' " Location of ctags
+	set tags=c:\mytags\tag_ac_trunk,c:\mytags\tag_qf_202
 else
 	set path=.
-	set path+=/usr/include/**,/usr/lib/qt-3.1/include/**
-	set tags=$HOME/ac/src/tags
+	set path+=/usr/include/**,$HOME/mytags
+	set tags=tag_ac_trunk,tag_qf_202
 endif
 let Tlist_Sort_Type="name" " order by
 
