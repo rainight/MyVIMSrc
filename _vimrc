@@ -1,129 +1,129 @@
-if has("win32")
-	source $VIMRUNTIME/mswin.vim
-	behave mswin
+if has("gui_gtk2")
+    source $VIMRUNTIME/mswin.vim
+    behave mswin
 endif
 
 execute pathogen#infect()
 
 set diffexpr=MyDiff()
 function! MyDiff()
-	let opt = '-a --binary '
-	if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-	if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-	let arg1 = v:fname_in
-	if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-	let arg2 = v:fname_new
-	if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-	let arg3 = v:fname_out
-	if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-	let eq = ''
-	if $VIMRUNTIME =~ ' '
-		if &sh =~ '\<cmd'
-			let cmd = '""' . $VIMRUNTIME . '\diff"'
-			let eq = '"'
-		else
-			let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-		endif
-	else
-		let cmd = $VIMRUNTIME . '\diff'
-	endif
-	silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+    let opt = '-a --binary '
+    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+    let arg1 = v:fname_in
+    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+    let arg2 = v:fname_new
+    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+    let arg3 = v:fname_out
+    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+    let eq = ''
+    if $VIMRUNTIME =~ ' '
+        if &sh =~ '\<cmd'
+            let cmd = '""' . $VIMRUNTIME . '\diff"'
+            let eq = '"'
+        else
+            let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+        endif
+    else
+        let cmd = $VIMRUNTIME . '\diff'
+    endif
+    silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
 fun! s:NextHelpBar()
-	let s:tagHelpBar = '|[^|]*|'
-	"let s:tagHelpStar = '\*[^*]*\*'
-	"let link_pos = search('\('.s:tagHelpStar.'\|'.s:tagHelpBar.'\)', 'w')
-	let link_pos = search('\('.s:tagHelpBar.'\)', 'w')
-	if link_pos == 0
-		echohl ErrorMsg | echo 'No hyperlinks' | echohl None
-	else
-		echo
-	endif
+    let s:tagHelpBar = '|[^|]*|'
+    "let s:tagHelpStar = '\*[^*]*\*'
+    "let link_pos = search('\('.s:tagHelpStar.'\|'.s:tagHelpBar.'\)', 'w')
+    let link_pos = search('\('.s:tagHelpBar.'\)', 'w')
+    if link_pos == 0
+        echohl ErrorMsg | echo 'No hyperlinks' | echohl None
+    else
+        echo
+    endif
 endfun
 
 fun! s:PreviousHelpBar()
-	let s:tagHelpBar = '|[^|]*|'
-	"let s:tagHelpStar = '\*[^*]*\*'
-	"let link_pos = search('\('.s:tagHelpStar.'\|'.s:tagHelpBar.'\)', 'w')
-	let link_pos = search('\('.s:tagHelpBar.'\)', 'bw')
-	if link_pos == 0
-		echohl ErrorMsg | echo 'No hyperlinks' | echohl None
-	else
-		echo
-	endif
+    let s:tagHelpBar = '|[^|]*|'
+    "let s:tagHelpStar = '\*[^*]*\*'
+    "let link_pos = search('\('.s:tagHelpStar.'\|'.s:tagHelpBar.'\)', 'w')
+    let link_pos = search('\('.s:tagHelpBar.'\)', 'bw')
+    if link_pos == 0
+        echohl ErrorMsg | echo 'No hyperlinks' | echohl None
+    else
+        echo
+    endif
 endfun
 
 function! Filetype_c()
-	set cindent complete=.,w,b,u,k
-	set dictionary+=$VIMHOME/wordlists/c.list
-	set cino+=:0 "dont' indent case:
-	set cino+=g0 "indent c++ public private etc...
-	if has("win32")
-		compiler bcc
-	endif
+    set cindent complete=.,w,b,u,k
+    set dictionary+=$VIMHOME/wordlists/c.list
+    set cino+=:0 "dont' indent case:
+    set cino+=g0 "indent c++ public private etc...
+    if has("win32")
+        compiler bcc
+    endif
 endfunction
 
 function! Filetype_cpp()
-	set cindent complete=.,w,b,u,k
-	set dictionary+=$VIMHOME/wordlists/cpp.list
-	set cino+=:0 "dont' indent case:
-	set cino+=g0 "indent c++ public private etc...
-	if has("win32")
-		compiler bcc
-	endif
+    set cindent complete=.,w,b,u,k
+    set dictionary+=$VIMHOME/wordlists/cpp.list
+    set cino+=:0 "dont' indent case:
+    set cino+=g0 "indent c++ public private etc...
+    if has("win32")
+        compiler bcc
+    endif
 endfunction
 
 function! Filetype_perl()
-	setlocal cindent
-	setlocal dictionary=$VIMHOME/wordlists/perl.list
+    setlocal cindent
+    setlocal dictionary=$VIMHOME/wordlists/perl.list
 endfunction
 
 function! Filetype_mail()
-	setlocal textwidth=76
+    setlocal textwidth=76
 endfunction
 
 function! Filetype_ml()
-	setlocal shiftwidth=2
-	setlocal softtabstop=2
-	setlocal dictionary=$VIMHOME/wordlists/xml.list
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal dictionary=$VIMHOME/wordlists/xml.list
 endfunction
 
 function! Filetype_tex()
-	if (! filereadable('Makefile'))
-		setlocal makeprg=latex\ %
-	endif
-	setlocal tw=80 
-	setlocal autoindent
+    if (! filereadable('Makefile'))
+        setlocal makeprg=latex\ %
+    endif
+    setlocal tw=80 
+    setlocal autoindent
 endfunction
 
 function! Filetype_lisp()
-	setlocal dictionary=$VIMHOME/wordlists/lisp.list
+    setlocal dictionary=$VIMHOME/wordlists/lisp.list
 endfunction
 
 function! Filetype_html()
-	setlocal dictionary=$VIMHOME/wordlists/xml.list
-	setlocal indentkeys-=o,O,*<Return>,<>>,<bs>
+    setlocal dictionary=$VIMHOME/wordlists/xml.list
+    setlocal indentkeys-=o,O,*<Return>,<>>,<bs>
 endfunction
 
 function! Filetype_help()
-	noremap <buffer> <TAB>	:call <SID>NextHelpBar()<cr>
-	noremap <buffer> <S-TAB>	:call <SID>PreviousHelpBar()<cr>
+    noremap <buffer> <TAB>	:call <SID>NextHelpBar()<cr>
+    noremap <buffer> <S-TAB>	:call <SID>PreviousHelpBar()<cr>
 endfunction
 
 function! Term_keymap()
-	set <F13>=[s
-	set <F14>=<F9>
-	set <F15>=[g
-	set <F16>=[u
-	set <F17>=[v
-	set <F18>=[o
-	map <F13> <C-F9>
-	map <F14> <M-F9>
-	map <F15> <S-F9>
-	map <F16> <C-F11>
-	map <F17> <C-F12>
-	map <F18> <C-F5>
+    set <F13>=[s
+    set <F14>=<F9>
+    set <F15>=[g
+    set <F16>=[u
+    set <F17>=[v
+    set <F18>=[o
+    map <F13> <C-F9>
+    map <F14> <M-F9>
+    map <F15> <S-F9>
+    map <F16> <C-F11>
+    map <F17> <C-F12>
+    map <F18> <C-F5>
 endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "General
@@ -136,9 +136,9 @@ set history=1000 " How many lines of history to remember
 
 if has("win32")
     set clipboard+=unnamed " turns out I do like is sharing windows clipboard
-	set ffs=dos,unix,mac " support all three,in this order
+    set ffs=dos,unix,mac " support all three,in this order
 else
-	set ffs=unix,dos,mac " support all three,in this order
+    set ffs=unix,dos,mac " support all three,in this order
 endif
 set viminfo+=! " make sure it can save viminfo
 set isk+=_,$,@,%,#,- " none of these should be word dividers,so make them not be
@@ -156,11 +156,11 @@ set shellslash
 "silent execute '!mkdir "'.$VIM/temp"'
 "silent execute '!del "'.$VIM/temp/*~"'
 if has("win32")
-	set backupdir=$VIM/temp//
-	set directory=$VIM/temp//
+    set backupdir=$VIM/temp//
+    set directory=$VIM/temp//
 else
-	set backupdir=~/temp//
-	set directory=~/temp//
+    set backupdir=~/temp//
+    set directory=~/temp//
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -168,17 +168,21 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on " syntax highlighting on 
 if (has("gui_running"))
-	set background=dark " we are using a dark background
-	set nowrap
-	"set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
-	set guifont=Consolas:h11:cANSI
-	colorscheme solarized
-	set lines=50 columns=140
+    set background=dark " we are using a dark background
+    set nowrap
+    "set guifont=Bitstream_Vera_Sans_Mono:h11:cANSI
+    if has("gui_gtk2")
+        set guifont=Consolas\ 13
+    else
+        set guifont=Consolas:h13:cANSI
+    endif
+    colorscheme solarized
+    set lines=50 columns=140
 else
-	set background=dark
-	set paste "this option is useful when using Vim in a terminal
-	set wrap
-	colo ron
+    set background=dark
+    set paste "this option is useful when using Vim in a terminal
+    set wrap
+    colo ron
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,8 +219,8 @@ set guioptions-=T "get rid of toolbar
 "block combined shotkey by ALT
 set winaltkeys=no
 if version>=700
-	set pumheight=10 "set popup menu hight
-	set showtabline=2
+    set pumheight=10 "set popup menu hight
+    set showtabline=2
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -287,14 +291,14 @@ let bufExplorerMaxHeight=15
 "for Windows only
 "put ctag.exe in VIM install folder
 if has("win32")
-	set path=.
-	set path+=c:\mytags\,H:\\mytags\\
-	let Tlist_Ctags_Cmd='ctags.exe' " Location of ctags
-	set tags=c:\mytags\tag_ac_trunk,c:\mytags\tag_qf_202
+    set path=.
+    set path+=c:\mytags\,H:\\mytags\\
+    let Tlist_Ctags_Cmd='ctags.exe' " Location of ctags
+    set tags=c:\mytags\tag_ac_trunk,c:\mytags\tag_qf_202
 else
-	set path=.
-	set path+=/usr/include/**,$HOME/mytags
-	set tags=tag_ac_trunk,tag_qf_202
+    set path=.
+    set path+=/usr/include/**,$HOME/mytags
+    set tags=tag_ac_trunk,tag_qf_202
 endif
 let Tlist_Sort_Type="name" " order by
 
@@ -345,48 +349,48 @@ autocmd BufEnter * : syntax sync fromstart " ensure every file does syntax highl
 "autocmd BufEnter * lcd%:p:h "automatic change working path to current folder
 
 augroup filesetting
-	autocmd FileType perl			call Filetype_perl()
-	autocmd FileType c				call Filetype_c()
-	autocmd FileType cpp			call Filetype_cpp()
-	autocmd FileType html           call Filetype_ml()
-	autocmd FileType ocaml          call Filetype_ml()
-	autocmd FileType xml            call Filetype_html()
-	autocmd FileType css            call Filetype_ml()
-	autocmd FileType tex            call Filetype_tex()
-	autocmd FileType lisp			call Filetype_lisp()
-	autocmd FileType mail			call Filetype_mail()
-	autocmd Filetype help			call Filetype_help()
+    autocmd FileType perl			call Filetype_perl()
+    autocmd FileType c				call Filetype_c()
+    autocmd FileType cpp			call Filetype_cpp()
+    autocmd FileType html           call Filetype_ml()
+    autocmd FileType ocaml          call Filetype_ml()
+    autocmd FileType xml            call Filetype_html()
+    autocmd FileType css            call Filetype_ml()
+    autocmd FileType tex            call Filetype_tex()
+    autocmd FileType lisp			call Filetype_lisp()
+    autocmd FileType mail			call Filetype_mail()
+    autocmd Filetype help			call Filetype_help()
 augroup END
 
 augroup filetypedetect
-	autocmd! BufRead *.nfo set encoding=cp437
-	autocmd! BufRead *.jsp set encoding=utf8
-	autocmd! BufRead *.otl setfiletype vo_base
-	autocmd! BufRead ~/mail/*        setlocal filetype=mail
-	autocmd! BufRead /tmp/mutt*      setlocal filetype=mail
-	autocmd! BufRead ~/.signature*   setlocal filetype=mail
-	autocmd! BufRead ~/.mutt/*       setlocal filetype=muttrc
-	autocmd! BufRead ~/.sawfish/custom setlocal filetype=lisp
-	autocmd! BufRead *.*html*        setlocal filetype=html
-	autocmd! BufRead *.blosxom       setlocal filetype=html
-	autocmd! BufRead *.css*          setlocal filetype=css
+    autocmd! BufRead *.nfo set encoding=cp437
+    autocmd! BufRead *.jsp set encoding=utf8
+    autocmd! BufRead *.otl setfiletype vo_base
+    autocmd! BufRead ~/mail/*        setlocal filetype=mail
+    autocmd! BufRead /tmp/mutt*      setlocal filetype=mail
+    autocmd! BufRead ~/.signature*   setlocal filetype=mail
+    autocmd! BufRead ~/.mutt/*       setlocal filetype=muttrc
+    autocmd! BufRead ~/.sawfish/custom setlocal filetype=lisp
+    autocmd! BufRead *.*html*        setlocal filetype=html
+    autocmd! BufRead *.blosxom       setlocal filetype=html
+    autocmd! BufRead *.css*          setlocal filetype=css
 augroup END
 
 " When editing a file,always jump to the last known cursor position.
 " Don't do it when the position is invalid or when inside an event handler
 " (happens when dropping a file on gvim).
 autocmd BufReadPost *
-			\ if line("'\"") > 0 && line("'\"") <= line("$") |
-			\ exe "normal g`\"" |
-			\ endif
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \ exe "normal g`\"" |
+            \ endif
 
 if version>=700
-	if has("autocmd") && exists("+omnifunc")
-		autocmd Filetype *
-					\ if &omnifunc=="" |
-					\ setlocal omnifunc=syntaxcomplete#Complete |
-					\ endif
-	endif
+    if has("autocmd") && exists("+omnifunc")
+        autocmd Filetype *
+                    \ if &omnifunc=="" |
+                    \ setlocal omnifunc=syntaxcomplete#Complete |
+                    \ endif
+    endif
 endif
 
 "template
@@ -443,12 +447,12 @@ nnoremap  <leader>sr :vimgrep <C-R><C-W> <C-R>=expand('%:p:h').'/**/*'<CR>
 
 "windows compatible
 if has("win32")
-	nnoremap <C-S> :update<CR>
-	inoremap <C-S> <C-o>:update<CR>
-	vnoremap <C-S> <C-C>:update<CR>
-	nnoremap <C-Z> u
-	inoremap <C-Z> <C-o>u
-	vnoremap p <Esc>:let current_reg=@"<CR>gvdi<C-R>=current_reg<CR><Esc>
+    nnoremap <C-S> :update<CR>
+    inoremap <C-S> <C-o>:update<CR>
+    vnoremap <C-S> <C-C>:update<CR>
+    nnoremap <C-Z> u
+    inoremap <C-Z> <C-o>u
+    vnoremap p <Esc>:let current_reg=@"<CR>gvdi<C-R>=current_reg<CR><Esc>
 endif
 
 "tab opt
@@ -498,62 +502,62 @@ nnoremap <silent> <F4> :%!xxd<CR>
 nnoremap <silent> <S-F4> :%!xxd -r<CR>
 nnoremap <silent> <F11> ms:call TitleDet()<cr>'s
 function AddTitle()
-	call append( 0,"///////////////////////////////////////////////////////////////////////////")
-	call append( 1,"//")
-	call append( 2,"//	File: ".expand("%:t"))
-	call append( 3,"//  Description: ")
-	call append( 4,"//")
-	call append( 5,"//	Copyright (c) 2009 by Thomson Reuters. All rights reserved.")
-	call append( 6,"//")
-	call append( 7,"// No portion of this software in any form may be used or ")
-	call append( 8,"// reproduced in any manner without written consent from ")
-	call append( 9,"// Thomson Reuters")
-	call append(10,"//")
-	call append(11,"//    $Id$")
-	call append(12,"//") 
-	echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
+    call append( 0,"///////////////////////////////////////////////////////////////////////////")
+    call append( 1,"//")
+    call append( 2,"//	File: ".expand("%:t"))
+    call append( 3,"//  Description: ")
+    call append( 4,"//")
+    call append( 5,"//	Copyright (c) 2009 by Thomson Reuters. All rights reserved.")
+    call append( 6,"//")
+    call append( 7,"// No portion of this software in any form may be used or ")
+    call append( 8,"// reproduced in any manner without written consent from ")
+    call append( 9,"// Thomson Reuters")
+    call append(10,"//")
+    call append(11,"//    $Id$")
+    call append(12,"//") 
+    echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
 endf
 "update last modify time and file name
 function UpdateTitle()
-	normal m'
-	execute '/# *MODIFIED:/s@:.*$@\=strftime(":  %Y-%m-%d %H:%M:%S %z")@'
-	normal ''
-	normal mk
-	execute '/# *FILE:/s@:.*$@\=":\t\t".expand("%:t")@'
-	execute "noh"
-	normal 'k
-	echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+    normal m'
+    execute '/# *MODIFIED:/s@:.*$@\=strftime(":  %Y-%m-%d %H:%M:%S %z")@'
+    normal ''
+    normal mk
+    execute '/# *FILE:/s@:.*$@\=":\t\t".expand("%:t")@'
+    execute "noh"
+    normal 'k
+    echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
 endfunction
 "update title in first 10 lines if not find, add new
 function TitleDet()
-	let n=1
-	"add as default
-	while n < 20
-		let line = getline(n)
-		if line =~ '^\#\s*\S*MODIFIED:\S*.*$'
-			call UpdateTitle()
-			return
-		endif
-		let n = n + 1
-	endwhile
-	call AddTitle()
+    let n=1
+    "add as default
+    while n < 20
+        let line = getline(n)
+        if line =~ '^\#\s*\S*MODIFIED:\S*.*$'
+            call UpdateTitle()
+            return
+        endif
+        let n = n + 1
+    endwhile
+    call AddTitle()
 endfunction
 
 
 if has("win32")
-	nnoremap <S-F6> :source $VIM/_vimrc<CR>
-	if version >= 700
-		nnoremap <silent>  <F6> :tabe $VIM/_vimrc<CR>
-	else
-		nnoremap <silent>  <F6> :e $VIM/_vimrc<CR>
-	endif
+    nnoremap <S-F6> :source $VIM/_vimrc<CR>
+    if version >= 700
+        nnoremap <silent>  <F6> :tabe $VIM/_vimrc<CR>
+    else
+        nnoremap <silent>  <F6> :e $VIM/_vimrc<CR>
+    endif
 else
-	nnoremap <S-F6> :source $HOME/.vimrc<CR>
-	if version >= 700
-		nnoremap <silent>  <F6> :tabe $HOME/.vimrc<CR>
-	else
-		nnoremap <silent>  <F6> :e $HOME/.vimrc<CR>
-	endif
+    nnoremap <S-F6> :source $HOME/.vimrc<CR>
+    if version >= 700
+        nnoremap <silent>  <F6> :tabe $HOME/.vimrc<CR>
+    else
+        nnoremap <silent>  <F6> :e $HOME/.vimrc<CR>
+    endif
 endif
 nnoremap <silent>  <F7> :cp<CR>
 nnoremap <silent>  <F8> :cn<CR>
@@ -568,8 +572,8 @@ nnoremap <silent>  <C-F1> :set tags=$VIM/tags,./tags,tags<CR>
 " Toggle spell check
 " For VIM7 only
 if version >= 700
-	nmap <silent>  <C-F11> :set spell!<CR>
-	imap <silent>  <C-F11> <C-o>:set spell!<CR>
+    nmap <silent>  <C-F11> :set spell!<CR>
+    imap <silent>  <C-F11> <C-o>:set spell!<CR>
 endif
 
 " Toggle line number
@@ -595,7 +599,7 @@ let g:nerdtree_tabs_open_on_console_startup = 0
 " Open NERDTree on console vim startup
 
 let g:nerdtree_tabs_no_startup_for_diff = 1
-  "Do not open NERDTree if vim starts in diff mode
+"Do not open NERDTree if vim starts in diff mode
 
 let g:nerdtree_tabs_smart_startup_focus = 1
 "  On startup - focus NERDTree when opening a directory, focus the file if
@@ -606,13 +610,13 @@ let g:nerdtree_tabs_open_on_new_tab = 1
 "  :NERDTreeTabsToggle)
 
 let g:nerdtree_tabs_meaningful_tab_names = 1
-  "Unfocus NERDTree when leaving a tab for descriptive tab names
+"Unfocus NERDTree when leaving a tab for descriptive tab names
 
 let g:nerdtree_tabs_autoclose = 1
-  "Close current tab if there is only one window in it and it's NERDTree
+"Close current tab if there is only one window in it and it's NERDTree
 
 let g:nerdtree_tabs_synchronize_view = 0
-  "Synchronize view of all NERDTree windows (scroll and cursor position)
+"Synchronize view of all NERDTree windows (scroll and cursor position)
 
 let g:nerdtree_tabs_synchronize_focus = 1
 "  Synchronize focus when switching tabs (focus NERDTree after tab switch
@@ -625,7 +629,7 @@ let g:nerdtree_tabs_focus_on_files = 1
 "  NERDTree.)
 
 let g:nerdtree_tabs_startup_cd = 1
-  "When starting up with a directory name as a parameter, cd into it
+"When starting up with a directory name as a parameter, cd into it
 
 "key mapping end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -643,15 +647,15 @@ let g:calendar_weeknm=1 " WK01
 "set dictionary+='$VIMHOME/wordlists/k+r.list'
 "set dictionary+='$VIMHOME/wordlists/stl_index.list'
 if has("win32")
-	let g:C_ObjExtension=".obj"
-	let g:C_ExeExtension=".exe"
-	let g:C_CCompiler="gcc.exe"
-	let g:C_CplusCompiler="gcc.exe"
-	let g:C_CFlags="-6 -A -v -c"
-	let g:C_LFlags="-6 -A -v"
-	let g:C_Libs="-lm"
-	let g:C_CExtension="c"
-	let g:C_Comments="no"
+    let g:C_ObjExtension=".obj"
+    let g:C_ExeExtension=".exe"
+    let g:C_CCompiler="gcc.exe"
+    let g:C_CplusCompiler="gcc.exe"
+    let g:C_CFlags="-6 -A -v -c"
+    let g:C_LFlags="-6 -A -v"
+    let g:C_Libs="-lm"
+    let g:C_CExtension="c"
+    let g:C_Comments="no"
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -686,19 +690,19 @@ let MRU_Max_Entries = 20
 "∞—œ¬√Ê’‚∂Œ¥˙¬Îº”»Îƒ„µƒvimrc÷–£¨æÕø…“‘√ø¥Œ‘⁄≤È’“Œƒº˛ ±∂º∫ˆ¬‘¥Û–°–¥≤È’“¡À£∫
 " lookup file with ignore case
 function! LookupFile_IgnoreCaseFunc(pattern)
-	let _tags = &tags
-	try
-		let &tags = eval(g:LookupFile_TagExpr)
-		let newpattern = '\c' . a:pattern
-		let tags = taglist(newpattern)
-	catch
-		echohl ErrorMsg | echo "Exception: " . v:exception | echohl NONE
-		return ""
-	finally
-		let &tags = _tags
-	endtry    " Show the matches for what is typed so far.
-	let files = map(tags, 'v:val["filename"]')
-	return files
+    let _tags = &tags
+    try
+        let &tags = eval(g:LookupFile_TagExpr)
+        let newpattern = '\c' . a:pattern
+        let tags = taglist(newpattern)
+    catch
+        echohl ErrorMsg | echo "Exception: " . v:exception | echohl NONE
+        return ""
+    finally
+        let &tags = _tags
+    endtry    " Show the matches for what is typed so far.
+    let files = map(tags, 'v:val["filename"]')
+    return files
 endfunction
 
 let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc'
@@ -729,16 +733,16 @@ iabbr jt <c-r>=strftime("%Y-%m-%d")<cr>
 command! Fcvs :source $VIM/cvsfix.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
+    if getline('.')[col('.') - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char
+    endif
 endfunction 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if !(has("gui_running"))
-	call Term_keymap()
+    call Term_keymap()
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
